@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class PersonRepository {
@@ -57,6 +58,12 @@ public class PersonRepository {
             return true;
         }
         return false;
+    }
+
+    public List<Person> findByAddresses(List<String> addresses) {
+        return dataUtils.getPersons().stream()
+                .filter(p -> addresses.contains(p.getAddress()))
+                .toList();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.openclassrooms.safetynet.controller;
 
+import com.openclassrooms.safetynet.dto.FireStationDTO;
 import com.openclassrooms.safetynet.model.FireStation;
 import com.openclassrooms.safetynet.service.FireStationService;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,11 @@ public class FireStationController {
     @DeleteMapping
     public boolean deleteFireStation(@RequestBody FireStation fireStation) {
         return fireStationService.deleteFireStation(fireStation);
+    }
+
+    @GetMapping
+    public FireStationDTO getPersonsByStationNumber(@RequestParam String stationNumber) {
+        return fireStationService.getPersonsByStationNumber(stationNumber);
     }
 
 }

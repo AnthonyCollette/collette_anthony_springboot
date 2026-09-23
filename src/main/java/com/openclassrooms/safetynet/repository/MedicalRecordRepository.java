@@ -56,4 +56,13 @@ public class MedicalRecordRepository {
 
         return false;
     }
+
+    public MedicalRecord findByName(String firstName, String lastName) {
+        Optional<MedicalRecord> medicalRecord = dataUtils.getMedicalRecords().stream().filter(mr -> mr.getFirstName().equalsIgnoreCase(firstName) &&
+                mr.getLastName().equalsIgnoreCase(lastName)).findFirst();
+        if (medicalRecord.isPresent()) {
+            return medicalRecord.get();
+        }
+        return null;
+    }
 }

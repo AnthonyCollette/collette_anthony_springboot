@@ -65,4 +65,11 @@ public class FireStationRepository {
         return false;
     }
 
+    public List<String> findAddressesByStationNumber(String stationNumber) {
+        return dataUtils.getFireStations().stream()
+                .filter(fs -> fs.getStation().equalsIgnoreCase(stationNumber))
+                .map(FireStation::getAddress)
+                .toList();
+    }
+
 }

@@ -17,4 +17,8 @@ public class PersonService {
         return personRepository.save(person);
     }
 
+    public boolean deletePerson(Person person) { return personRepository.delete(person); }
+
+    public boolean updatePerson(Person person) { return personRepository.update(person); }
+
 }

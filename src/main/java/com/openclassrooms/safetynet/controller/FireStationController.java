@@ -5,7 +5,7 @@ import com.openclassrooms.safetynet.service.FireStationService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@RequestMapping("/firestation")
 public class FireStationController {
 
     private final FireStationService fireStationService;

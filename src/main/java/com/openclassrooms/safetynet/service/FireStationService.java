@@ -8,11 +8,9 @@ import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.repository.FireStationRepository;
 import com.openclassrooms.safetynet.repository.MedicalRecordRepository;
 import com.openclassrooms.safetynet.repository.PersonRepository;
+import com.openclassrooms.safetynet.util.DataUtils;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -21,16 +19,13 @@ public class FireStationService {
     private final FireStationRepository fireStationRepository;
     private final PersonRepository personRepository;
     private final MedicalRecordRepository medicalRecordRepository;
+    private final DataUtils dataUtils;
 
-    public FireStationService(FireStationRepository fireStationRepository, PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository) {
+    public FireStationService(FireStationRepository fireStationRepository, PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository, DataUtils dataUtils) {
         this.fireStationRepository = fireStationRepository;
         this.personRepository = personRepository;
         this.medicalRecordRepository = medicalRecordRepository;
-    }
-
-    private int calculateAge(String birthdate) {
-        LocalDate birthDate = LocalDate.parse(birthdate, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-        return Period.between(birthDate, LocalDate.now()).getYears();
+        this.dataUtils = dataUtils;
     }
 
     public FireStation addFireStation(FireStation fireStation) {
@@ -73,7 +68,7 @@ public class FireStationService {
             MedicalRecord mr = medicalRecordRepository.findByName(person.getFirstName(), person.getLastName());
 
             if (mr != null) {
-                int age = calculateAge(mr.getBirthdate());
+                int age = dataUtils.calculateAge(mr.getBirthdate());
                 if (age >= 18) {
                     adultCount++;
                 } else {

@@ -72,4 +72,12 @@ public class FireStationRepository {
                 .toList();
     }
 
+    public String findStationNumberByAddress(String address) {
+         return dataUtils.getFireStations().stream()
+                .filter(fs -> fs.getAddress().equalsIgnoreCase(address))
+                 .map(FireStation::getStation)
+                 .findFirst()
+                 .orElse(null);
+    }
+
 }

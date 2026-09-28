@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,5 +62,10 @@ public class DataUtils {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public int calculateAge(String birthdate) {
+        LocalDate birthDate = LocalDate.parse(birthdate, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        return Period.between(birthDate, LocalDate.now()).getYears();
     }
 }

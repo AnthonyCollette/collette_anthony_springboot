@@ -1,20 +1,29 @@
 package com.openclassrooms.safetynet.repository;
 
+import com.openclassrooms.safetynet.dto.FireDTO;
+import com.openclassrooms.safetynet.dto.PersonFireDTO;
+import com.openclassrooms.safetynet.mapper.PersonMapper;
+import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.util.DataUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 public class PersonRepository {
 
     private final DataUtils dataUtils;
+    private final MedicalRecordRepository medicalRecordRepository;
+    private final FireStationRepository fireStationRepository;
+    private final PersonMapper personMapper;
 
-    public PersonRepository(DataUtils dataUtils) {
+    public PersonRepository(DataUtils dataUtils, MedicalRecordRepository medicalRecordRepository, FireStationRepository fireStationRepository, PersonMapper personMapper) {
         this.dataUtils = dataUtils;
+        this.medicalRecordRepository = medicalRecordRepository;
+        this.fireStationRepository = fireStationRepository;
+        this.personMapper = personMapper;
     }
 
     public List<Person> findAll() {
@@ -66,4 +75,15 @@ public class PersonRepository {
                 .toList();
     }
 
+    public List<Person> findByLastName(String lastName) {
+        return dataUtils.getPersons().stream()
+                .filter(p -> p.getLastName().equalsIgnoreCase(lastName))
+                .toList();
+    }
+
+    public List<Person> findByCity(String city) {
+        return dataUtils.getPersons().stream()
+                .filter(p -> p.getCity().equalsIgnoreCase(city))
+                .toList();
+    }
 }

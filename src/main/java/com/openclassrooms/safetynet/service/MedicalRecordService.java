@@ -11,13 +11,31 @@ public class MedicalRecordService {
 
     public MedicalRecordService(MedicalRecordRepository medicalRecordRepository) {this.medicalRecordRepository = medicalRecordRepository;}
 
+    /**
+     * Adds a new medical record.
+     * @param medicalRecord
+     * @return {@link MedicalRecord}
+     */
+
     public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord) {
         return medicalRecordRepository.save(medicalRecord);
     }
 
+    /**
+     * Updates an existent medical record.
+     * @param medicalRecord
+     * @return {@link Boolean}
+     */
+
     public boolean updateMedicalRecord(MedicalRecord medicalRecord) {
         return medicalRecordRepository.update(medicalRecord);
     }
+
+    /**
+     * Deletes a medical record.
+     * @param medicalRecord
+     * @return {@link Boolean}
+     */
 
     public boolean deleteMedicalRecord(MedicalRecord medicalRecord) {
         return medicalRecordRepository.delete(medicalRecord);

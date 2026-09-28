@@ -28,13 +28,33 @@ public class FireStationService {
         this.dataUtils = dataUtils;
     }
 
+    /**
+     * Adds a new fire station.
+     *
+     * @param fireStation
+     * @return {@link FireStation}
+     */
     public FireStation addFireStation(FireStation fireStation) {
         return fireStationRepository.save(fireStation);
     }
 
+    /**
+     * Updates an existent fire station.
+     *
+     * @param fireStation
+     * @return {@link Boolean}
+     */
+
     public boolean updateFireStation(FireStation fireStation) {
         return fireStationRepository.update(fireStation);
     }
+
+    /**
+     * Deletes a fire station.
+     *
+     * @param fireStation
+     * @return {@link Boolean}
+     */
 
     public boolean deleteFireStation(FireStation fireStation) {
         if (fireStation.getAddress() != null && !fireStation.getAddress().isBlank()) {
@@ -47,6 +67,14 @@ public class FireStationService {
 
         return false;
     }
+
+    /**
+     * Gets the list of persons covered by station number,
+     * along with the count of children and adults.
+     *
+     * @param stationNumber the fire station number
+     * @return the {@link FireStationDTO} containing persons and demographic counts
+     */
 
     public FireStationDTO getPersonsByStationNumber(String stationNumber) {
 

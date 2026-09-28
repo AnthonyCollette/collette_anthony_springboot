@@ -32,13 +32,37 @@ public class PersonService {
         this.personMapper = personMapper;
     }
 
+    /**
+     * Adds a new person.
+     * @param person
+     * @return {@link Person}
+     */
+
     public Person addPerson(Person person) {
         return personRepository.save(person);
     }
 
+    /**
+     * Deletes a person.
+     * @param person
+     * @return {@link Boolean}
+     */
+
     public boolean deletePerson(Person person) { return personRepository.delete(person); }
 
+    /**
+     * Updates an existent person.
+     * @param person
+     * @return {@link Boolean}
+     */
+
     public boolean updatePerson(Person person) { return personRepository.update(person); }
+
+    /**
+     * Gets the list of children living at the given address.
+     * @param address the address to search for
+     * @return the {@link List} of {@link ChildDTO} containing children and other household members
+     */
 
     public List<ChildDTO> getChildrenByAddress(String address) {
 
@@ -75,6 +99,12 @@ public class PersonService {
 
     }
 
+    /**
+     * Gets the list of phone numbers covered by the given fire station.
+     * @param fireStation the fire station number to search for
+     * @return the {@link List} of {@link String} representing phone numbers
+     */
+
     public List<String> getPhoneNumbers(String fireStation) {
         List<String> addresses = fireStationRepository.findAddressesByStationNumber(fireStation);
         List<Person> persons = personRepository.findByAddresses(addresses);
@@ -86,6 +116,14 @@ public class PersonService {
 
         return phoneNumbers;
     }
+
+    /**
+     * Gets the map of the station number along with the list of persons covered by the fire station.
+     * @param stationNumbers the list of fire station numbers
+     * @return a {@link Map} containing station numbers as keys
+     * and a {@link List} of {@link  PersonFireDTO} as values
+     *
+     */
 
     public Map<String, List<PersonFireDTO>> getPersonsByStationNumbers(List<String> stationNumbers) {
 
@@ -110,6 +148,12 @@ public class PersonService {
         return households;
     }
 
+    /**
+     * Gets residents information living at the given address along with the serving fire station number.
+     * @param address the address to search for
+     * @return a {@link FireDTO} containing residents medical details and the station number
+     */
+
     public FireDTO getResidentsInfosByAddress(String address) {
         List<Person> persons = personRepository.findByAddresses(List.of(address));
         FireDTO fireDTO = new FireDTO();
@@ -129,6 +173,12 @@ public class PersonService {
         return fireDTO;
     }
 
+    /**
+     * Gets person information corresponding to the given last name.
+     * @param lastName the last name to search for
+     * @return a {@link List} of {@link PersonInfoDTO} containing personal and medical details
+     */
+
     public List<PersonInfoDTO> getPersonInfosByLastName(String lastName) {
         List<PersonInfoDTO> personInfoDTOs = new ArrayList<>();
 
@@ -143,6 +193,12 @@ public class PersonService {
 
         return personInfoDTOs;
     }
+
+    /**
+     * Gets email addresses of persons living in the given city.
+     * @param city the city to search for
+     * @return a {@link List} of {@link String} representing email addresses
+     */
 
     public List<String> getEmailsByCity(String city) {
         List<String> emails = new ArrayList<>();

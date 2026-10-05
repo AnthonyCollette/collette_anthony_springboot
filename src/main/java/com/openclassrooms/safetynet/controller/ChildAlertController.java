@@ -21,7 +21,7 @@ public class ChildAlertController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getChildrenByAddress(@RequestParam String address) {
+    public ResponseEntity<List<ChildDTO>> getChildrenByAddress(@RequestParam String address) {
         List<ChildDTO> children = personService.getChildrenByAddress(address);
 
         return ResponseEntity.ok(children);

@@ -2,6 +2,7 @@ package com.openclassrooms.safetynet.controller;
 
 import com.openclassrooms.safetynet.dto.FireDTO;
 import com.openclassrooms.safetynet.service.PersonService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,8 +19,10 @@ public class FireController {
     }
 
     @GetMapping
-    public FireDTO getResidentsByAddress(@RequestParam String address) {
-        return personService.getResidentsInfosByAddress(address);
+    public ResponseEntity<FireDTO> getResidentsByAddress(@RequestParam String address) {
+        FireDTO residents = personService.getResidentsInfosByAddress(address);
+
+        return ResponseEntity.ok(residents);
     }
 
 }

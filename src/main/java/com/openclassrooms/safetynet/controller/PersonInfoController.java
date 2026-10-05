@@ -2,6 +2,7 @@ package com.openclassrooms.safetynet.controller;
 
 import com.openclassrooms.safetynet.dto.PersonInfoDTO;
 import com.openclassrooms.safetynet.service.PersonService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,9 @@ public class PersonInfoController {
     }
 
     @GetMapping("/personInfolastName={lastName}")
-    public List<PersonInfoDTO> getPersonInfoByLastName(@PathVariable("lastName") String lastName) {
-        return personService.getPersonInfosByLastName(lastName);
+    public ResponseEntity<List<PersonInfoDTO>> getPersonInfoByLastName(@PathVariable("lastName") String lastName) {
+        List<PersonInfoDTO> personInfos = personService.getPersonInfosByLastName(lastName);
+
+        return ResponseEntity.ok(personInfos);
     }
 }

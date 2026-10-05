@@ -2,6 +2,7 @@ package com.openclassrooms.safetynet.controller;
 
 import com.openclassrooms.safetynet.dto.PersonFireDTO;
 import com.openclassrooms.safetynet.service.PersonService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,8 @@ public class FloodController {
     }
 
     @GetMapping("/stations")
-    public Map<String, List<PersonFireDTO>> getPersonsByStationNumbers(@RequestParam List<String> stations) {
-        return personService.getPersonsByStationNumbers(stations);
+    public ResponseEntity<Map<String, List<PersonFireDTO>>> getPersonsByStationNumbers(@RequestParam List<String> stations) {
+        Map<String, List<PersonFireDTO>> persons = personService.getPersonsByStationNumbers(stations);
+        return ResponseEntity.ok(persons);
     }
 }

@@ -2,6 +2,7 @@ package com.openclassrooms.safetynet.controller;
 
 import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.service.MedicalRecordService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,17 +16,28 @@ public class MedicalRecordController {
     }
 
     @PostMapping
-    public MedicalRecord addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        return medicalRecordService.addMedicalRecord(medicalRecord);
+    public ResponseEntity<MedicalRecord> addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+        MedicalRecord mr = medicalRecordService.addMedicalRecord(medicalRecord);
+        return ResponseEntity.ok(mr);
     }
 
     @PutMapping
-    public boolean updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        return medicalRecordService.updateMedicalRecord(medicalRecord);
+    public ResponseEntity<Void> updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+        Boolean updated = medicalRecordService.updateMedicalRecord(medicalRecord);
+        if (!updated) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping
-    public boolean deleteMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        return medicalRecordService.deleteMedicalRecord(medicalRecord);
+    public ResponseEntity<Void> deleteMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+        Boolean deleted = medicalRecordService.deleteMedicalRecord(medicalRecord);
+
+        if (!deleted) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.noContent().build();
     }
 }

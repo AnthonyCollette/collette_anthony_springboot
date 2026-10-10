@@ -48,7 +48,8 @@ public class PersonService {
      * @return {@link Boolean}
      */
 
-    public boolean deletePerson(Person person) { return personRepository.delete(person); }
+    public boolean deletePerson(Person person) {
+        return personRepository.delete(person); }
 
     /**
      * Updates an existent person.
@@ -56,7 +57,8 @@ public class PersonService {
      * @return {@link Boolean}
      */
 
-    public boolean updatePerson(Person person) { return personRepository.update(person); }
+    public boolean updatePerson(Person person) {
+        return personRepository.update(person); }
 
     /**
      * Gets the list of children living at the given address.
@@ -67,6 +69,7 @@ public class PersonService {
     public List<ChildDTO> getChildrenByAddress(String address) {
 
         List<Person> houseHoldPersons = personRepository.findByAddresses(List.of(address));
+
         List<ChildDTO> childrenList = new ArrayList<>();
 
         for (Person person : houseHoldPersons) {
@@ -106,7 +109,9 @@ public class PersonService {
      */
 
     public List<String> getPhoneNumbers(String fireStation) {
+
         List<String> addresses = fireStationRepository.findAddressesByStationNumber(fireStation);
+
         List<Person> persons = personRepository.findByAddresses(addresses);
         List<String> phoneNumbers = new ArrayList<>();
 

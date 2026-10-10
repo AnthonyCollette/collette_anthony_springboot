@@ -2,9 +2,11 @@ package com.openclassrooms.safetynet.controller;
 
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.service.PersonService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/person")
 public class PersonController {
@@ -17,31 +19,55 @@ public class PersonController {
 
     @PostMapping
     public ResponseEntity<Person> addPerson(@RequestBody Person person) {
-        Person result = personService.addPerson(person);
+        log.info("Received POST request for /person with person: {}", person);
 
-        return ResponseEntity.ok(result);
+        try {
+            Person result = personService.addPerson(person);
+
+            log.info("Successfully processed /person POST request for person: {}", person);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.error("Error occurred while processing /person for person: {} - Message: {}", person, e.getMessage(), e);
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deletePerson(@RequestBody Person person) {
-        Boolean deleted = personService.deletePerson(person);
+        log.info("Received DELETE request for /person with person: {}", person);
 
-        if (!deleted) {
-            return ResponseEntity.notFound().build();
+        try {
+            Boolean deleted = personService.deletePerson(person);
+
+            log.info("Successfully processed /person DELETE request for person: {}", person);
+
+            if (!deleted) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            log.error("Error occurred while processing /person for person: {} - Message: {}", person, e.getMessage(), e);
+            return ResponseEntity.internalServerError().build();
         }
-
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping
     public ResponseEntity<Void> updatePerson(@RequestBody Person person) {
-        Boolean updated = personService.updatePerson(person);
+        log.info("Received PUT request for /person with person: {}", person);
 
-        if (!updated) {
-            return ResponseEntity.notFound().build();
+        try {
+            Boolean updated = personService.updatePerson(person);
+            log.info("Successfully processed /person PUT request for person: {}", person);
+            if (!updated) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            log.error("Error occurred while processing /person for person: {} - Message: {}", person, e.getMessage(), e);
+            return ResponseEntity.internalServerError().build();
         }
-
-        return ResponseEntity.noContent().build();
     }
 
 

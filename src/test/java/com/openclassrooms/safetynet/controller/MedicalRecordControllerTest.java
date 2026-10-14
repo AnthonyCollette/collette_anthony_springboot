@@ -43,6 +43,19 @@ public class MedicalRecordControllerTest {
     }
 
     @Test
+    void testAddMedicalRecord_withError() throws Exception {
+        MedicalRecord medicalRecord = new MedicalRecord("Paul", "Jones", "02/18/1990",
+                List.of("pharmacol:5000mg", "terazine:10mg"), List.of("peanut"));
+
+        when(medicalRecordService.addMedicalRecord(medicalRecord)).thenThrow(new RuntimeException("Simulated error"));
+
+        mockMvc.perform(post("/medicalRecord")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(medicalRecord)))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
     void testUpdateMedicalRecord() throws Exception {
         MedicalRecord medicalRecord = new MedicalRecord("John", "Boyd", "03/06/1984",
                 List.of("aznol:350mg", "hydrapermazol:100mg"), List.of());
@@ -56,6 +69,19 @@ public class MedicalRecordControllerTest {
     }
 
     @Test
+    void testUpdateMedicalRecord_withError() throws Exception {
+        MedicalRecord medicalRecord = new MedicalRecord("John", "Boyd", "03/06/1984",
+                List.of("aznol:350mg", "hydrapermazol:100mg"), List.of());
+
+        when(medicalRecordService.updateMedicalRecord(any(MedicalRecord.class))).thenThrow(new RuntimeException("Simulated error"));
+
+        mockMvc.perform(put("/medicalRecord")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(medicalRecord)))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
     void testDeleteMedicalRecord() throws Exception {
         MedicalRecord medicalRecord = new MedicalRecord("John", "Boyd", "03/06/1984",
                 List.of("aznol:350mg", "hydrapermazol:100mg"), List.of("peanut", "apple"));
@@ -66,6 +92,19 @@ public class MedicalRecordControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(medicalRecord)))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testDeleteMedicalRecord_withError() throws Exception {
+        MedicalRecord medicalRecord = new MedicalRecord("John", "Boyd", "03/06/1984",
+                List.of("aznol:350mg", "hydrapermazol:100mg"), List.of("peanut", "apple"));
+
+        when(medicalRecordService.deleteMedicalRecord(any(MedicalRecord.class))).thenThrow(new RuntimeException("Simulated error"));
+
+        mockMvc.perform(delete("/medicalRecord")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(medicalRecord)))
+                .andExpect(status().isInternalServerError());
     }
 
 }

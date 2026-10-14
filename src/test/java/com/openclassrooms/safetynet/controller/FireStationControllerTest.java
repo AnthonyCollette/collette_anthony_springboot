@@ -42,6 +42,18 @@ public class FireStationControllerTest {
     }
 
     @Test
+    void testAddFireStation_withError() throws Exception {
+        FireStation fireStation = new FireStation("1509 Culver St", "80");
+
+        when(fireStationService.addFireStation(any(FireStation.class))).thenThrow(new RuntimeException("Simulated error"));
+
+        mockMvc.perform(post("/firestation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fireStation)))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
     void testUpdateFireStation() throws Exception {
         FireStation fireStation = new FireStation("1509 Culver St", "80");
 
@@ -51,6 +63,18 @@ public class FireStationControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(fireStation)))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testUpdateFireStation_withError() throws Exception {
+        FireStation fireStation = new FireStation("1509 Culver St", "80");
+
+        when(fireStationService.updateFireStation(any(FireStation.class))).thenThrow(new RuntimeException("Simulated error"));
+
+        mockMvc.perform(put("/firestation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fireStation)))
+                .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -66,9 +90,29 @@ public class FireStationControllerTest {
     }
 
     @Test
+    void testDeleteFireStation_withError() throws Exception {
+        FireStation fireStation = new FireStation("1509 Culver St", "3");
+
+        when(fireStationService.deleteFireStation(any(FireStation.class))).thenThrow(new RuntimeException("Simulated error"));
+
+        mockMvc.perform(delete("/firestation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fireStation)))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
     void testGetPersonsByStationNumber() throws Exception {
         mockMvc.perform(get("/firestation?stationNumber=3"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void testGetPersonsByStationNumber_withError() throws Exception {
+        when(fireStationService.getPersonsByStationNumber("3")).thenThrow(new RuntimeException("Simulated error"));
+
+        mockMvc.perform(get("/firestation?stationNumber=3"))
+                .andExpect(status().isInternalServerError());
     }
 
 }

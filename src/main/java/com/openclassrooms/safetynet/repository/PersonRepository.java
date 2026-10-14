@@ -1,9 +1,6 @@
 package com.openclassrooms.safetynet.repository;
 
-import com.openclassrooms.safetynet.dto.FireDTO;
-import com.openclassrooms.safetynet.dto.PersonFireDTO;
 import com.openclassrooms.safetynet.mapper.PersonMapper;
-import com.openclassrooms.safetynet.model.MedicalRecord;
 import com.openclassrooms.safetynet.model.Person;
 import com.openclassrooms.safetynet.util.DataUtils;
 import org.springframework.stereotype.Repository;

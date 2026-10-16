@@ -66,6 +66,17 @@ public class FireStationControllerTest {
     }
 
     @Test
+    void testUpdateFireStation_notFound() throws Exception {
+        FireStation fireStation = new FireStation("1509 Culver St", "80");
+        when(fireStationService.updateFireStation(any(FireStation.class))).thenReturn(false);
+
+        mockMvc.perform(put("/firestation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fireStation)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void testUpdateFireStation_withError() throws Exception {
         FireStation fireStation = new FireStation("1509 Culver St", "80");
 
@@ -87,6 +98,18 @@ public class FireStationControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(fireStation)))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testDeleteFireStation_notFound() throws Exception {
+        FireStation fireStation = new FireStation("1509 Culver St", "3");
+
+        when(fireStationService.deleteFireStation(any(FireStation.class))).thenReturn(false);
+
+        mockMvc.perform(delete("/firestation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fireStation)))
+                .andExpect(status().isNotFound());
     }
 
     @Test

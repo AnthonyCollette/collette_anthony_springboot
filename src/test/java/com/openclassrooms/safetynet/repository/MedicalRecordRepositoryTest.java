@@ -12,10 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class MedicalRecordRepositoryTest {
@@ -66,6 +64,17 @@ public class MedicalRecordRepositoryTest {
     }
 
     @Test
+    void testUpdate_failed() {
+        List<MedicalRecord> emptyList = new ArrayList<>();
+        when(dataUtils.getMedicalRecords()).thenReturn(emptyList);
+
+        Boolean updated = medicalRecordRepository.update(medicalRecord);
+
+        assertFalse(updated);
+        verify(dataUtils, never()).saveData();
+    }
+
+    @Test
     void testDelete() {
         when(dataUtils.getMedicalRecords()).thenReturn(medicalRecords);
 
@@ -73,6 +82,17 @@ public class MedicalRecordRepositoryTest {
 
         assertTrue(deleted);
         verify(dataUtils).saveData();
+    }
+
+    @Test
+    void testDelete_failed() {
+        List<MedicalRecord> emptyList = new ArrayList<>();
+        when(dataUtils.getMedicalRecords()).thenReturn(emptyList);
+
+        Boolean deleted = medicalRecordRepository.delete(medicalRecord);
+
+        assertFalse(deleted);
+        verify(dataUtils, never()).saveData();
     }
 
 }

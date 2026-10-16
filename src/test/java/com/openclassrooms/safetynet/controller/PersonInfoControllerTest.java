@@ -24,7 +24,7 @@ public class PersonInfoControllerTest {
 
     @Test
     void testGetPersonInfoByLastName() throws Exception {
-        mockMvc.perform(get("/personInfolastName=Boyd"))
+        mockMvc.perform(get("/personInfo?lastName=Boyd"))
                 .andExpect(status().isOk());
     }
 
@@ -32,7 +32,7 @@ public class PersonInfoControllerTest {
     void testGetPersonInfoByLastName_withError() throws Exception {
         when(personService.getPersonInfosByLastName("Boyd")).thenThrow(new RuntimeException("Simulated error"));
 
-        mockMvc.perform(get("/personInfolastName=Boyd"))
+        mockMvc.perform(get("/personInfo?lastName=Boyd"))
                 .andExpect(status().isInternalServerError());
     }
 

@@ -69,6 +69,19 @@ public class MedicalRecordControllerTest {
     }
 
     @Test
+    void testUpdateMedicalRecord_notFound() throws Exception {
+        MedicalRecord medicalRecord = new MedicalRecord("John", "Boyd", "03/06/1984",
+                List.of("aznol:350mg", "hydrapermazol:100mg"), List.of());
+
+        when(medicalRecordService.updateMedicalRecord(any(MedicalRecord.class))).thenReturn(false);
+
+        mockMvc.perform(put("/medicalRecord")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(medicalRecord)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void testUpdateMedicalRecord_withError() throws Exception {
         MedicalRecord medicalRecord = new MedicalRecord("John", "Boyd", "03/06/1984",
                 List.of("aznol:350mg", "hydrapermazol:100mg"), List.of());
@@ -92,6 +105,19 @@ public class MedicalRecordControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(medicalRecord)))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testDeleteMedicalRecord_notFound() throws Exception {
+        MedicalRecord medicalRecord = new MedicalRecord("John", "Boyd", "03/06/1984",
+                List.of("aznol:350mg", "hydrapermazol:100mg"), List.of("peanut", "apple"));
+
+        when(medicalRecordService.deleteMedicalRecord(any(MedicalRecord.class))).thenReturn(false);
+
+        mockMvc.perform(delete("/medicalRecord")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(medicalRecord)))
+                .andExpect(status().isNotFound());
     }
 
     @Test

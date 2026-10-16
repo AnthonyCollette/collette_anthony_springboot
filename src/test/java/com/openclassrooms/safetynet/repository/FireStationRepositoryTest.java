@@ -12,10 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class FireStationRepositoryTest {
@@ -68,6 +66,17 @@ public class FireStationRepositoryTest {
     }
 
     @Test
+    void testUpdate_failed() {
+        List<FireStation> emptyList = new ArrayList<>();
+        when(dataUtils.getFireStations()).thenReturn(emptyList);
+
+        Boolean updated = fireStationRepository.update(fireStation);
+
+        assertFalse(updated);
+        verify(dataUtils, never()).saveData();
+    }
+
+    @Test
     void testDeleteByAddress() {
 
         String address = "1509 Culver St";
@@ -80,6 +89,18 @@ public class FireStationRepositoryTest {
     }
 
     @Test
+    void testDeleteByAddress_failed() {
+
+        String address = "";
+        when(dataUtils.getFireStations()).thenReturn(new ArrayList<>(List.of(fireStation)));
+
+        Boolean deleted = fireStationRepository.deleteByAddress(address);
+
+        assertFalse(deleted);
+        verify(dataUtils, never()).saveData();
+    }
+
+    @Test
     void testDeleteByStationNumber() {
 
         when(dataUtils.getFireStations()).thenReturn(new ArrayList<>(List.of(fireStation)));
@@ -88,6 +109,17 @@ public class FireStationRepositoryTest {
 
         assertTrue(deleted);
         verify(dataUtils).saveData();
+    }
+
+    @Test
+    void testDeleteByStationNumber_failed() {
+        List<FireStation> emptyList = new ArrayList<>();
+        when(dataUtils.getFireStations()).thenReturn(emptyList);
+
+        Boolean deleted = fireStationRepository.deleteByStationNumber("3");
+
+        assertFalse(deleted);
+        verify(dataUtils, never()).saveData();
     }
 
 }

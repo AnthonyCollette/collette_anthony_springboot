@@ -67,6 +67,19 @@ public class PersonControllerTest {
     }
 
     @Test
+    void testDeletePerson_notFound() throws Exception {
+        Person person = new Person("John", "Boyd", "1509 Culver St", "Culver", "97451",
+                "841-874-6512", "jaboyd2@email.com");
+
+        when(personService.deletePerson(any(Person.class))).thenReturn(false);
+
+        mockMvc.perform(delete("/person")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(person)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void testDeletePerson_withError() throws Exception {
         Person person = new Person("John", "Boyd", "1509 Culver St", "Culver", "97451",
                 "841-874-6512", "jaboyd2@email.com");
@@ -90,6 +103,19 @@ public class PersonControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(person)))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testUpdatePerson_notFound() throws Exception {
+        Person person = new Person("John", "Boyd", "1510 Culver St", "Culver", "97451",
+                "841-874-6512", "jaboyd@email.com");
+
+        when(personService.updatePerson(any(Person.class))).thenReturn(false);
+
+        mockMvc.perform(put("/person")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(person)))
+                .andExpect(status().isNotFound());
     }
 
     @Test

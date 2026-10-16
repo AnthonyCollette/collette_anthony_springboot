@@ -12,10 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PersonRepositoryTest {
@@ -68,6 +66,18 @@ public class PersonRepositoryTest {
     }
 
     @Test
+    void testDelete_failed() {
+        List<Person> emptyList = new ArrayList<>();
+
+        when(dataUtils.getPersons()).thenReturn(emptyList);
+
+        Boolean deleted = personRepository.delete(person);
+
+        assertFalse(deleted);
+        verify(dataUtils, never()).saveData();
+    }
+
+    @Test
     void testUpdate() {
         when(dataUtils.getPersons()).thenReturn(persons);
 
@@ -75,6 +85,17 @@ public class PersonRepositoryTest {
 
         assertTrue(updated);
         verify(dataUtils).saveData();
+    }
+
+    @Test
+    void testUpdate_failed() {
+        List<Person> emptyList = new ArrayList<>();
+        when(dataUtils.getPersons()).thenReturn(emptyList);
+
+        Boolean updated = personRepository.update(person);
+
+        assertFalse(updated);
+        verify(dataUtils, never()).saveData();
     }
 
 }
